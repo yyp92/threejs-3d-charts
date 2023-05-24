@@ -1,13 +1,6 @@
 <template>
   <div class="home" ref="screenDom">
     <div class="canvas-container"></div>
-    <!-- <BigScreen></BigScreen> -->
-    <!-- <div class="loading" v-if="progress != 100"></div>
-    <div class="progress" v-if="progress != 100">
-      <img src="../assets/loading.gif" alt="" />
-      <span>酒店加载中：{{ progress }}%</span>
-    </div>
-    <div class="title">老陈海景酒店日夜交替展示</div> -->
   </div>
 </template>
 
@@ -17,7 +10,6 @@ import ThreePlus from "../three/index";
 import * as THREE from "three";
 import eventHub from "@/utils/eventHub";
 import modifyCityMaterial from "../three/modify/modifyCityMaterial";
-import BigScreen from "../components/BigScreen.vue";
 import gsap from "gsap";
 
 let progress = ref(0);
@@ -68,7 +60,58 @@ onMounted(() => {
   // threePlus.addBar3d(data)
 
   // 创建饼图
-  threePlus.addPie3d(data)
+  // threePlus.addPie3d(data)
+
+
+  // 折线图
+  threePlus.addPolyline3d();
+  const dataExamples2 = [
+    {
+        value: 3.5,
+        name: '星期一',
+        type: '万台'
+    },
+    {
+        value: 2.7,
+        name: '星期二',
+        type: '万台'
+    },
+    {
+        value: 3.0,
+        name: '星期三',
+        type: '万台'
+    },
+    {
+        value: 2.5,
+        name: '星期四',
+        type: '万台'
+    },
+    {
+        value: 3.2,
+        name: '星期五',
+        type: '万台'
+    },
+    {
+        value: 3.6,
+        name: '星期六',
+        type: '万台'
+    },
+    {
+        value: 2.0,
+        name: '星期日',
+        type: '万台'
+    },
+  ]
+
+  const pline = threePlus.addPolyline3d(dataExamples2)
+  pline.mesh.position.z = -1
+
+  // 添加光
+  threePlus.setLight()
+
+  THREE.DefaultLoadingManager.onProgress = function(item, loaded, total) {
+    progress.value = new Number((loaded / total) * 100).toFixed(2)
+  }
 });
 </script>
 
